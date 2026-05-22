@@ -1,0 +1,7 @@
+Hi {{ user.name }},
+
+Click the link below to activate your Golf Handicapper account:
+
+{{ url_for('auth.activate', token=token, email=user.email, _external=True) }}
+
+If you didn't create this account, you can ignore this email.

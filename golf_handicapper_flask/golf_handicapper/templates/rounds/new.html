@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Add Round – Golf Handicapper{% endblock %}
+{% block content %}
+<div style="max-width:480px; margin:0 auto;">
+  <h1>Add a Round</h1>
+  <div class="card">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        {{ form.course.label }}
+        {{ form.course(placeholder="e.g. Pebble Beach") }}
+        {% for e in form.course.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.game_date.label }}
+        {{ form.game_date(placeholder="e.g. 2024-06-15") }}
+        {% for e in form.game_date.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+        <div class="form-group">
+          {{ form.score.label }}
+          {{ form.score(placeholder="e.g. 88") }}
+          {% for e in form.score.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="form-group">
+          {{ form.rating.label }}
+          {{ form.rating(placeholder="e.g. 72.4") }}
+          {% for e in form.rating.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="form-group">
+          {{ form.slope.label }}
+          {{ form.slope(placeholder="e.g. 130") }}
+          {% for e in form.slope.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+        </div>
+      </div>
+      <p style="font-size:.82rem; color:var(--muted); margin-bottom:1.2rem;">Slope and course rating are printed on the scorecard.</p>
+      <div style="display:flex; gap:.75rem;">
+        <button type="submit" class="btn btn-primary">Save Round</button>
+        <a class="btn btn-secondary" href="{{ url_for('users.show', user_id=current_user.id) }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

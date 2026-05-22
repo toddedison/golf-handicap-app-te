@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+
+<h1>Sign up</h1>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      {% with object = form %}{% include "shared/_error_messages.html" %}{% endwith %}
+
+      <div class="form-group">
+        {{ form.name.label }}
+        {{ form.name(class='form-control') }}
+        {% for e in form.name.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class='form-control') }}
+        {% for e in form.email.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class='form-control') }}
+        {% for e in form.password.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.password_confirmation.label }}
+        {{ form.password_confirmation(class='form-control') }}
+        {% for e in form.password_confirmation.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      {{ form.submit(class='btn btn-primary') }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}

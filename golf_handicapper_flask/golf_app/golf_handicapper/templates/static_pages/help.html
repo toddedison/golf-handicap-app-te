@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Help{% endblock %}
+{% block content %}
+
+<h2 class="mb10">What is a Golf Handicap?</h2>
+
+<span class="image-float-right">
+  <a href="{{ url_for('static_pages.help') }}">
+    <img src="{{ url_for('static', filename='img/golf-shot.jpg') }}" alt="Handicap">
+  </a>
+</span>
+
+<p>A golf handicap is a numerical measure of a golfer's <em>potential ability</em>.<br>
+The lower the handicap, the better the golfer.</p>
+
+<p>A handicap allows golfers of different ability levels to compete on an equal playing field.</p>
+
+<p>A USGA Handicap is calculated with a specific arithmetic formula that approximates how many
+strokes above or below par a player might be able to play, based on the ten best scores of
+their last twenty rounds.</p>
+
+<p>A golfer whose handicap is zero is called a scratch golfer. A golfer whose handicap is
+approximately 18 is called a bogey golfer.</p>
+
+
+<h2 class="mt30 mb10">How a USGA Handicap Index is Calculated</h2>
+
+<span class="image-float-right">
+  <a href="{{ url_for('static_pages.help') }}">
+    <img src="{{ url_for('static', filename='img/handicap-differentials.png') }}" alt="Handicap Differentials">
+  </a>
+</span>
+
+<p>A USGA Handicap Index is determined using the following formula:</p>
+
+<ul>
+  <li>Take your Adjusted Gross Scores (A minimum of 5 rounds and a maximum of 20 rounds).</li>
+  <li>Take the Course Rating and Slope Rating of each course.</li>
+  <li>Determine the number of Handicap Differentials to use based on the table (at right).</li>
+  <li>Determine the Handicap Differential for each score<br>
+      (Handicap Differential = (Adjusted Gross Score − USGA Course Rating) × 113 / Slope Rating).</li>
+  <li>Average the number of Handicap Differentials that were used.</li>
+  <li>Multiply by 0.96.</li>
+  <li>The result is your Handicap Index.</li>
+</ul>
+
+<a href="{{ url_for('static_pages.help') }}">
+  <img src="{{ url_for('static', filename='img/handicap-differential-calculation.png') }}" alt="figure 1.2" style="max-width:100%;margin-bottom:1rem;">
+</a>
+
+
+<h2 class="mt30 mb10">Course Rating and Slope</h2>
+
+<p>In the United States each officially rated golf course is described by two numbers: the course
+rating and the slope rating. The course rating of a particular course is a number generally between
+67 and 77 that is used to measure the average "good score" by a scratch golfer on that course.
+The slope rating of a particular course is a number between 55 and 155 that describes the relative
+difficulty of a course for a bogey golfer compared to a scratch golfer. These two numbers are used
+to calculate a player's handicap differential, which is used to adjust a player's score in relation
+to par according to the slope and rating of the course. The slope rating for a golf course of
+average difficulty is 113.</p>
+
+<p>For each officially posted round, the player's handicap differential is calculated according
+to the following formula:
+  <a href="{{ url_for('static_pages.help') }}">
+    <img src="{{ url_for('static', filename='img/handicap-differential-calculation.png') }}" alt="Handicap Calculation" style="max-width:100%;margin-top:.5rem;display:block;">
+  </a>
+</p>
+
+<p>Equitable Score Control is the number of strokes for a round, after equitable score control
+adjustment, which allows for a maximum number of strokes per hole, for handicap computation
+purposes only, based on the player's course handicap.</p>
+
+<p>The differential is rounded to the nearest tenth.</p>
+
+<p class="mt40">
+  <a href="https://en.wikipedia.org/wiki/Handicap_(golf)" target="_blank">Complete Golf Handicap Explanation</a>
+</p>
+
+{% endblock %}

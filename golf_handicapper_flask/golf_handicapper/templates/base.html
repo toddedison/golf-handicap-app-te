@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Golf Handicapper{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-dark:   #1a3a2a;
+      --green-mid:    #2d6a4f;
+      --green-light:  #52b788;
+      --fairway:      #d8f3dc;
+      --sand:         #f4e4b0;
+      --ink:          #0d1f17;
+      --muted:        #5a7a68;
+      --white:        #fafdf8;
+      --danger:       #c0392b;
+      --warning:      #d4860a;
+      --info:         #1a6a8a;
+      --success:      var(--green-mid);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--green-dark);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.35);
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--fairway);
+      text-decoration: none;
+      letter-spacing: .02em;
+    }
+    .nav-brand span { color: var(--green-light); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a {
+      color: #a8c8b4;
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 400;
+      letter-spacing: .04em;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--fairway); }
+    .nav-links .btn-nav {
+      background: var(--green-light);
+      color: var(--green-dark);
+      padding: .4rem 1.1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background .2s;
+    }
+    .nav-links .btn-nav:hover { background: #74c69d; color: var(--ink); }
+
+    /* ── FLASH MESSAGES ── */
+    .flash-list { list-style: none; }
+    .flash {
+      padding: .8rem 1.4rem;
+      font-size: .92rem;
+      border-left: 4px solid;
+      margin-bottom: .4rem;
+    }
+    .flash-success { background: #eaf7ee; border-color: var(--green-mid); color: #1a4d2e; }
+    .flash-danger  { background: #fdf0ef; border-color: var(--danger);    color: #6b1a17; }
+    .flash-info    { background: #e8f4f8; border-color: var(--info);      color: #0e3a4d; }
+    .flash-warning { background: #fdf6e3; border-color: var(--warning);   color: #6b430a; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+    h1 { font-size: 2.2rem; margin-bottom: 1.2rem; }
+    h2 { font-size: 1.55rem; margin-bottom: .9rem; }
+
+    /* ── CARDS ── */
+    .card {
+      background: #fff;
+      border: 1px solid #dceee4;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(26,58,42,.08);
+    }
+
+    /* ── FORMS ── */
+    .form-group { margin-bottom: 1.2rem; }
+    label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: .35rem;
+    }
+    input[type=text], input[type=email], input[type=password], input[type=number], input[type=file] {
+      width: 100%;
+      padding: .6rem .85rem;
+      border: 1.5px solid #c8ddd0;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: .95rem;
+      color: var(--ink);
+      background: #f9fdf9;
+      transition: border-color .2s;
+      outline: none;
+    }
+    input:focus { border-color: var(--green-light); background: #fff; }
+    .field-error { color: var(--danger); font-size: .82rem; margin-top: .25rem; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-block;
+      padding: .6rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: filter .15s, transform .1s;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn-primary   { background: var(--green-mid);  color: #fff; }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-secondary { background: var(--fairway);    color: var(--green-dark); border: 1.5px solid #a8d5b5; }
+    .btn-secondary:hover { background: #c3eacd; }
+    .btn-danger    { background: var(--danger);     color: #fff; }
+    .btn-danger:hover { filter: brightness(1.1); }
+    .btn-sm { padding: .3rem .85rem; font-size: .82rem; }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    thead th {
+      background: var(--green-dark);
+      color: #c8e6d4;
+      padding: .7rem 1rem;
+      text-align: left;
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+      letter-spacing: .06em;
+      font-size: .8rem;
+      text-transform: uppercase;
+    }
+    tbody tr:nth-child(even) { background: #f3f9f5; }
+    tbody td { padding: .65rem 1rem; border-bottom: 1px solid #e4f0e8; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green-dark);
+      color: #7aaa90;
+      text-align: center;
+      padding: 1.2rem;
+      font-size: .82rem;
+      letter-spacing: .04em;
+    }
+    footer a { color: var(--green-light); text-decoration: none; }
+
+    /* ── HANDICAP BADGE ── */
+    .handicap-badge {
+      display: inline-block;
+      background: var(--green-dark);
+      color: var(--fairway);
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      padding: .5rem 1.5rem;
+      border-radius: 8px;
+      letter-spacing: .02em;
+    }
+    .handicap-label {
+      display: block;
+      font-size: .8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: .4rem;
+    }
+
+    /* ── CHECKBOX ── */
+    .checkbox-group { display: flex; align-items: center; gap: .5rem; }
+    .checkbox-group input[type=checkbox] { width: auto; }
+    .checkbox-group label { text-transform: none; font-size: .95rem; color: var(--ink); margin: 0; }
+
+    /* ── PAGINATION ── */
+    .pagination { display: flex; gap: .5rem; justify-content: center; margin-top: 1.5rem; }
+    .pagination a, .pagination span {
+      padding: .35rem .8rem;
+      border: 1.5px solid #c8ddd0;
+      border-radius: 4px;
+      font-size: .88rem;
+      text-decoration: none;
+      color: var(--green-mid);
+    }
+    .pagination .current { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="{{ url_for('static_pages.home') }}">⛳ Golf<span>Handicapper</span></a>
+  <div class="nav-links">
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('rounds.new') }}">Add Round</a>
+      <a href="{{ url_for('users.show', user_id=current_user.id) }}">My Scorecard</a>
+      {% if current_user.admin %}
+        <a href="{{ url_for('users.index') }}">All Users</a>
+      {% endif %}
+      <a href="{{ url_for('auth.logout') }}">Log Out</a>
+    {% else %}
+      <a href="{{ url_for('static_pages.about') }}">About</a>
+      <a href="{{ url_for('auth.login') }}">Log In</a>
+      <a class="btn-nav" href="{{ url_for('auth.signup') }}">Sign Up</a>
+    {% endif %}
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flash-list" style="padding: 0 1.5rem; margin-top: .5rem;">
+      {% for category, msg in messages %}
+        <li class="flash flash-{{ category }}">{{ msg }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  &copy; Golf Handicapper &nbsp;|&nbsp;
+  <a href="{{ url_for('static_pages.about') }}">About</a> &nbsp;|&nbsp;
+  <a href="{{ url_for('static_pages.help') }}">Help</a> &nbsp;|&nbsp;
+  <a href="{{ url_for('static_pages.privacy') }}">Privacy</a>
+</footer>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

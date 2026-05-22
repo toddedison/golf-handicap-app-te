@@ -1,0 +1,14 @@
+{% if object and object.errors %}
+<div id="error_explanation">
+  <div class="alert alert-danger">
+    The form contains {{ object.errors | length }} error{{ 's' if object.errors | length != 1 }}.
+  </div>
+  <ul>
+    {% for field, errs in object.errors.items() %}
+      {% for err in errs %}
+        <li>{{ field | capitalize }} {{ err }}</li>
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

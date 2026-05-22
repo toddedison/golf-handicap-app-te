@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="HandheldFriendly" content="true">
+  <meta charset="UTF-8">
+  <title>{% block title %}The Golf Handicapper{% endblock %} | The Golf Handicapper</title>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script>
+  <![endif]-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ═══ HEADER / NAVBAR (translated from _header_html.erb) ═══ -->
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+    <a href="{{ url_for('static_pages.home') }}" id="logo">The Golf Handicapper</a>
+
+    <nav id="nav-main">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('static_pages.home') }}">Home</a></li>
+        <li><a href="{{ url_for('static_pages.about') }}">About</a></li>
+        <li><a href="{{ url_for('static_pages.help') }}">Help</a></li>
+        {% if current_user.is_authenticated %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Account <b class="caret">▾</b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ url_for('users.show', user_id=current_user.id) }}">Profile</a></li>
+              <li><a href="{{ url_for('users.edit',  user_id=current_user.id) }}">Settings</a></li>
+              {% if current_user.admin %}
+                <li><a href="{{ url_for('users.index') }}">Admin</a></li>
+              {% endif %}
+              <li class="divider"></li>
+              <li>
+                <form method="POST" action="{{ url_for('auth.logout') }}" style="margin:0;">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="nav-logout-btn">Log out</button>
+                </form>
+              </li>
+            </ul>
+          </li>
+        {% else %}
+          <li><a href="{{ url_for('auth.login') }}">Log in</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+
+    <div id="nav-trigger"><span>Menu</span></div>
+    <nav id="nav-mobile"></nav>
+  </div>
+</header>
+
+<!-- ═══ MAIN CONTAINER ═══ -->
+<div class="container main-container">
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Page content -->
+  {% block content %}{% endblock %}
+
+  <!-- ═══ FOOTER (translated from _footer_html.erb) ═══ -->
+  <footer class="footer">
+    <small>
+      <a href="https://the-golf-handicapper.herokuapp.com/">The Golf Handicapper</a> – Copyright ©2017
+    </small>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('static_pages.privacy') }}">Privacy Policy</a></li>
+      </ul>
+    </nav>
+  </footer>
+
+</div><!-- /.container -->
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block extra_js %}{% endblock %}
+
+<script>
+  // Mobile nav — translated from _header_html.erb inline script
+  document.addEventListener('DOMContentLoaded', function () {
+    var navMain    = document.getElementById('nav-main');
+    var navMobile  = document.getElementById('nav-mobile');
+    var trigger    = document.querySelector('#nav-trigger span');
+
+    if (navMain && navMobile) {
+      navMobile.innerHTML = navMain.innerHTML;
+    }
+
+    if (trigger) {
+      trigger.addEventListener('click', function () {
+        var ul = navMobile.querySelector('ul');
+        if (!ul) return;
+        if (ul.classList.contains('expanded')) {
+          ul.classList.remove('expanded');
+          ul.style.display = 'none';
+          trigger.classList.remove('open');
+        } else {
+          ul.classList.add('expanded');
+          ul.style.display = 'flex';
+          trigger.classList.add('open');
+        }
+      });
+    }
+
+    // Dropdown hover/click
+    document.querySelectorAll('.dropdown').forEach(function (dd) {
+      dd.addEventListener('click', function (e) {
+        var menu = dd.querySelector('.dropdown-menu');
+        if (menu) menu.classList.toggle('open');
+        e.stopPropagation();
+      });
+    });
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.dropdown-menu.open').forEach(function (m) {
+        m.classList.remove('open');
+      });
+    });
+  });
+</script>
+</body>
+</html>

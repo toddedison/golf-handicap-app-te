@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}All Users – Admin{% endblock %}
+{% block content %}
+<h1>All Users</h1>
+<div class="card" style="padding:0; overflow:hidden;">
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Rounds</th><th>Handicap</th><th>Activated</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for u in pagination.items %}
+      <tr>
+        <td><a href="{{ url_for('users.show', user_id=u.id) }}" style="color:var(--green-mid);">{{ u.name }}</a></td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.rounds.count() }}</td>
+        <td>{{ u.handicap }}</td>
+        <td>{{ '✓' if u.activated else '✗' }}</td>
+        <td>
+          {% if u != current_user %}
+          <form method="POST" action="{{ url_for('users.delete', user_id=u.id) }}" onsubmit="return confirm('Delete {{ u.name }}?')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if pagination.pages > 1 %}
+<div class="pagination">
+  {% if pagination.has_prev %}
+    <a href="?page={{ pagination.prev_num }}">← Prev</a>
+  {% endif %}
+  {% for p in pagination.iter_pages() %}
+    {% if p %}
+      <a href="?page={{ p }}" class="{{ 'current' if p == pagination.page }}">{{ p }}</a>
+    {% else %}
+      <span>…</span>
+    {% endif %}
+  {% endfor %}
+  {% if pagination.has_next %}
+    <a href="?page={{ pagination.next_num }}">Next →</a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

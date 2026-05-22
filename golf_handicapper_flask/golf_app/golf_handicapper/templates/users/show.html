@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ user.name }}{% endblock %}
+{% block content %}
+
+<div class="picture-div">
+  <h1>
+    {% if user.picture %}
+      <img src="{{ url_for('static', filename='img/' ~ user.picture) }}" alt="{{ user.name }}">
+    {% endif %}
+    {{ user.name }}
+  </h1>
+</div>
+
+<div class="exhibit">
+  <h2>Score Card</h2>
+  <div class="container-special">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Date</th>
+          <th>Slope</th>
+          <th>Rating</th>
+          <th>Score</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for round in rounds %}
+        <tr>
+          <td>{{ round.course }}</td>
+          <td>{{ round.game_date }}</td>
+          <td>{{ round.slope }}</td>
+          <td>{{ round.rating }}</td>
+          <td>{{ round.score }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('rounds.delete', round_id=round.id) }}"
+                  onsubmit="return confirm('Are you sure you want to delete this round?')">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tac mb10">
+    <a href="{{ url_for('rounds.new') }}" class="btn btn-primary">Record a New Round</a>
+  </div>
+
+  <div class="handicap-style">
+    {% set round_count = rounds | length %}
+    {% if round_count < 5 %}
+      {% if round_count in [1, 3, 4] %}
+        <div class="alert alert-danger">An official handicap requires a minimum of 5 rounds of golf!</div>
+      {% endif %}
+      <h3>Your unofficial handicap is:</h3>
+    {% else %}
+      <h3>Your official handicap is:</h3>
+    {% endif %}
+    <span class="handicap-score">{{ user.handicap }}</span>
+  </div>
+</div>
+
+{% if rounds | length >= 5 %}
+<div class="tac mt40 mb10">
+  <a href="{{ url_for('users.show', user_id=user.id) }}?format=pdf">Printable Scorecard (PDF)</a>
+</div>
+{% endif %}
+
+{% endblock %}

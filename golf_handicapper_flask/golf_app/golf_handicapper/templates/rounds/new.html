@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}New Round{% endblock %}
+{% block content %}
+
+<h1>Record a New Round</h1>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      {% if form.errors %}
+      <div id="error_explanation">
+        <div class="alert alert-danger">The form contains errors.</div>
+        <ul>
+          {% for field, errs in form.errors.items() %}
+            {% for err in errs %}
+              <li>{{ field | capitalize }} {{ err }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="form-group">
+        {{ form.course.label }}
+        {{ form.course(class='form-control') }}
+        {% for e in form.course.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="game_date">Date</label>
+        {{ form.game_date(class='form-control', id='game_date') }}
+        {% for e in form.game_date.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.slope.label }}
+        {{ form.slope(class='form-control', type='number', min='55', max='155', maxlength='3') }}
+        {% for e in form.slope.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.rating.label }}
+        {{ form.rating(class='form-control', step='0.1') }}
+        {% for e in form.rating.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.score.label }}
+        {{ form.score(class='form-control', type='number', min='59', max='130', maxlength='3') }}
+        {% for e in form.score.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      {{ form.submit(class='btn btn-primary') }}
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+<script>
+  // Activate native date-picker on the date field
+  document.addEventListener('DOMContentLoaded', function () {
+    var df = document.getElementById('game_date');
+    if (df) { df.setAttribute('type', 'date'); }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="jumbotron">
+  {% if current_user.is_authenticated %}
+    <h1 class="mb0">Welcome to The Golf Handicapper</h1>
+    <p class="alert" style="background:rgba(255,255,255,.15);border:none;color:#d8f3dc;margin-top:.75rem;">You are already logged in!</p>
+    <div class="pb20">
+      <a href="{{ url_for('users.show', user_id=current_user.id) }}" class="btn btn-lg btn-primary">Go to profile</a>
+    </div>
+  {% else %}
+    <h1>Welcome to The Golf Handicapper</h1>
+    <a href="{{ url_for('auth.signup') }}" class="btn btn-lg btn-primary">Sign up now!</a>
+    <p style="margin-top:1rem;color:#c8e6d4;">
+      Already have an account? <a href="{{ url_for('auth.login') }}" style="color:var(--fairway);text-decoration:underline;">Login now!</a>
+    </p>
+  {% endif %}
+</div>
+
+<div class="tac">
+  <a href="https://the-golf-handicapper.herokuapp.com/">
+    <img src="{{ url_for('static', filename='img/golf-background2.jpg') }}" alt="The Golf Handicapper logo" style="max-width:100%;border-radius:6px;">
+  </a>
+</div>
+
+{% endblock %}

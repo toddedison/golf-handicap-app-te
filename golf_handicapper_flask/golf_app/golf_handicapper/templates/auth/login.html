@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+
+<h1>Log in</h1>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      {% include "shared/_error_messages.html" with context %}
+
+      <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class='form-control') }}
+        {% for e in form.email.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class='form-control') }}
+        {% for e in form.password.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+
+      <div class="form-group checkbox-row">
+        {{ form.remember_me() }}
+        {{ form.remember_me.label }}
+      </div>
+
+      {{ form.submit(class='btn btn-primary') }}
+    </form>
+
+    <p style="margin-top:1rem;font-size:.9rem;">
+      <a href="{{ url_for('auth.password_reset_request') }}">Forgot password?</a>
+    </p>
+    <p style="font-size:.9rem;">
+      New user? <a href="{{ url_for('auth.signup') }}">Sign up now!</a>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

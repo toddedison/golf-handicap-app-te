@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div style="max-width:500px; margin:0 auto;">
+  <h1>Edit Profile</h1>
+  <div class="card">
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        {{ form.name.label }}
+        {{ form.name() }}
+        {% for e in form.name.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email() }}
+        {% for e in form.email.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(placeholder="Leave blank to keep current") }}
+        {% for e in form.password.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.password_confirmation.label }}
+        {{ form.password_confirmation() }}
+        {% for e in form.password_confirmation.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form.picture.label }}
+        {{ form.picture() }}
+        {% for e in form.picture.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+      </div>
+      <div style="display:flex; gap:.75rem; margin-top:1.5rem;">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a class="btn btn-secondary" href="{{ url_for('users.show', user_id=user.id) }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

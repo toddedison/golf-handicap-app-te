@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}About – Golf Handicapper{% endblock %}
+{% block content %}
+<h1>About Golf Handicapper</h1>
+<div class="card">
+  <p>Golf Handicapper helps golfers track their rounds and calculate an accurate handicap index using the USGA differential formula:</p>
+  <blockquote style="font-family:'Playfair Display',serif; font-size:1.1rem; border-left:4px solid var(--green-light); padding:.5rem 1rem; margin:1.2rem 0; color:var(--green-dark);">
+    Differential = (Score − Course Rating) × 113 ÷ Slope Rating
+  </blockquote>
+  <p>Your handicap index is the average of your best differentials, multiplied by 0.96.</p>
+</div>
+{% endblock %}

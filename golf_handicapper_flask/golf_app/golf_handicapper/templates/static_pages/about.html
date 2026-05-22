@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+
+<h1>About</h1>
+
+<span class="image-float-right">
+  <a href="{{ url_for('static_pages.about') }}">
+    <img src="{{ url_for('static', filename='img/putting.jpg') }}" alt="Putting">
+  </a>
+</span>
+
+<p>The Golf Handicapper is a FREE tool that can be used to calculate your USGA golf handicap.
+You need a minimum of 5 rounds for an official USGA handicap. For complete instructions on
+how to calculate your handicap, visit
+<a href="{{ url_for('static_pages.help') }}">How to Calculate Your Golf Handicap</a>.
+Copyright 2017.</p>
+
+<p class="mt40">Contact The Golf Handicapper about this application at
+<a href="mailto:inthetube@hotmail.com">inthetube@hotmail.com</a>.</p>
+
+{% endblock %}
